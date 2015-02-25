@@ -47,8 +47,8 @@ var Engine = (function(global) {
          */
          // If user pressed space then start the game
          if (startGame) {
-            $("#score").find('p').text(player.score);
-            $("#lives").find('p').text(player.lives);
+            $('#score').find('p').text(player.score);
+            $('#lives').find('p').text(player.lives);
             update(dt);
          }
         // update(dt);

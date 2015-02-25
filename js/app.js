@@ -104,19 +104,19 @@ Player.prototype.selectPlayer = function() {
     var currentPlayer = $("#players").val();
     // console.log(currentPlayer);
     switch(currentPlayer) {
-        case "boy":
+        case 'boy':
             this.sprite = 'images/char-boy.png';
             break;
-        case "cat-girl":
+        case 'cat-girl':
             this.sprite = 'images/char-cat-girl.png';
             break;
-        case "horn-girl":
+        case 'horn-girl':
             this.sprite = 'images/char-horn-girl.png';
             break;
-        case "pink-girl":
+        case 'pink-girl':
             this.sprite = 'images/char-pink-girl.png';
             break;
-        case "princess-girl":
+        case 'princess-girl':
             this.sprite = 'images/char-princess-girl.png';
             break;
         default:
@@ -172,8 +172,8 @@ Player.prototype.resetPosition = function() {
         startGame = false;
         this.score = 0;
         this.lives = 10;
-        $("#score").find('p').text(player.score);
-        alert("Game Over! :( Click ok, then press 'space' to start the game.");
+        $('#score').find('p').text(player.score);
+        alert('Game Over! :( Click ok, then press "space" to start the game.');
     }
 }
 var enemyMinSpeed = 100;
