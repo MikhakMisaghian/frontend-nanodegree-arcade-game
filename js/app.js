@@ -9,11 +9,11 @@ var Enemy = function(x, y, speed) {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
-    //  Initializing position corordinates
+    // Initializing position corordinates
     this.x = x;
     this.y = y;
 
-    //  Initializing the enemy's speed
+    // Initializing the enemy's speed
     this.speed = speed;
 }
 
@@ -34,7 +34,7 @@ Enemy.prototype.update = function(dt) {
         this.x = -50;
     }
 
-    //  defining the edges of the enemy for collision detection
+    // defining the edges of the enemy for collision detection
     this.left = this.x;
     this.top = this.y;
     this.right = this.x + 70;
@@ -45,7 +45,7 @@ Enemy.prototype.update = function(dt) {
     }
 }
 
-//  Checks to see if enemy and player are intersecting
+// Checks to see if enemy and player are intersecting
 Enemy.prototype.isIntersecting = function(enemy, player) {
         return !(enemy.top > player.bottom
                || enemy.left > player.right
@@ -53,11 +53,11 @@ Enemy.prototype.isIntersecting = function(enemy, player) {
                || enemy.bottom < player.top);
 }
 
-//  Checks to see if there is any collision between enemy and payer
-//  if there is then reset position
+// Checks to see if there is any collision between enemy and payer
+// if there is then reset position
 Enemy.prototype.checkCollision = function(enemy, player) {
     if(this.isIntersecting(enemy, player)) {
-        //  If there is collision between the player and any of the enemies,
+        // If there is collision between the player and any of the enemies,
         // reduce the player's life by 1
         player.lives -= 1;
         console.log("lives:");
@@ -82,24 +82,24 @@ var Player = function(x, y) {
     this.x = x;
     this.y = y;
 
-    //  Initializing the number of lives the player has
+    // Initializing the number of lives the player has
     this.lives = 10;
 
-    //  Initializing the player's score
+    // Initializing the player's score
     this.score = 0;
 }
 
 // Update the player's position
 Player.prototype.update = function() {
     playerExists = true;
-    //  defining the edges of the player for collision detection
+    // defining the edges of the player for collision detection
     this.left = this.x;
     this.top = this.y;
     this.right = this.x + 70;
     this.bottom = this.y + 70;
 }
 
-//  Function that allows you select a player of your choice
+// Function that allows you select a player of your choice
 Player.prototype.selectPlayer = function() {
     var currentPlayer = $("#players").val();
     // console.log(currentPlayer);
@@ -131,7 +131,7 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-//  Handles the keyboard inputs
+// Handles the keyboard inputs
 Player.prototype.handleInput = function(keyCode) {
     if (keyCode === 'left') {
         if (this.x > 50) {
@@ -162,9 +162,9 @@ Player.prototype.handleInput = function(keyCode) {
     }
 }
 
-//  This function resets the player position to its starting position
-//  It checks if the player's lives is 0, the it sets the score to 0 and lives to 10
-//  promts the user that game is over
+// This function resets the player position to its starting position
+// It checks if the player's lives is 0, the it sets the score to 0 and lives to 10
+// promts the user that game is over
 Player.prototype.resetPosition = function() {
     this.x = 200;
     this.y = 400;
