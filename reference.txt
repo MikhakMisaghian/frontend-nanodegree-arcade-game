@@ -1,0 +1,1 @@
+I used W3School, stackoverflow, and Udacity discussion forum to solve the issues I had during this project.
