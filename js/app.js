@@ -1,5 +1,7 @@
+var startGame = false;
+var playerExists = false;
 // Enemies our player must avoid
-var Enemy = function(x, y) {
+var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -10,6 +12,9 @@ var Enemy = function(x, y) {
     //  Initializing position corordinates
     this.x = x;
     this.y = y;
+
+    //  Initializing the enemy's speed
+    this.speed = speed;
 }
 
 // Update the enemy's position, required method for game
@@ -19,7 +24,10 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    var dist = 200 * dt;
+    // var dist = 200 * dt;
+    // this.x += dist;
+    // console.log(this.speed);
+    var dist = this.speed * dt;
     this.x += dist;
 
     if (this.x > 500) {
@@ -32,7 +40,9 @@ Enemy.prototype.update = function(dt) {
     this.right = this.x + 70;
     this.bottom = this.y + 70;
 
-    this.checkCollision(this, player);
+    if(playerExists) {
+        this.checkCollision(this, player);
+    }
 }
 
 //  Checks to see if enemy and player are intersecting
@@ -47,6 +57,12 @@ Enemy.prototype.isIntersecting = function(enemy, player) {
 //  if there is then reset position
 Enemy.prototype.checkCollision = function(enemy, player) {
     if(this.isIntersecting(enemy, player)) {
+        //  If there is collision between the player and any of the enemies,
+        // reduce the player's life by 1
+        player.lives -= 1;
+        console.log("lives:");
+        console.log(player.lives);
+        $("#lives").find('p').text(player.lives);
         player.resetPosition();
     }
 }
@@ -59,24 +75,55 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(x, y) {
-
-    // The image/sprite for our player
+    // The default image/sprite for our player
     this.sprite = 'images/char-boy.png';
 
     // Initializing position coordinates
     this.x = x;
     this.y = y;
 
+    //  Initializing the number of lives the player has
+    this.lives = 10;
+
+    //  Initializing the player's score
     this.score = 0;
 }
 
 // Update the player's position
 Player.prototype.update = function() {
+    playerExists = true;
     //  defining the edges of the player for collision detection
     this.left = this.x;
     this.top = this.y;
     this.right = this.x + 70;
     this.bottom = this.y + 70;
+}
+
+//  Function that allows you select a player of your choice
+Player.prototype.selectPlayer = function() {
+    var currentPlayer = $("#players").val();
+    // console.log(currentPlayer);
+    switch(currentPlayer) {
+        case "boy":
+            this.sprite = 'images/char-boy.png';
+            break;
+        case "cat-girl":
+            this.sprite = 'images/char-cat-girl.png';
+            break;
+        case "horn-girl":
+            this.sprite = 'images/char-horn-girl.png';
+            break;
+        case "pink-girl":
+            this.sprite = 'images/char-pink-girl.png';
+            break;
+        case "princess-girl":
+            this.sprite = 'images/char-princess-girl.png';
+            break;
+        default:
+            this.sprite = 'images/char-boy.png';
+            break;
+
+    }
 }
 
 // Draw the player on the screen, required method for game
@@ -110,21 +157,32 @@ Player.prototype.handleInput = function(keyCode) {
             this.y +=83;
         }
     }
+    if (keyCode == 'space') {
+        startGame = true;
+    }
 }
 
+//  This function resets the player position to its starting position
+//  It checks if the player's lives is 0, the it sets the score to 0 and lives to 10
+//  promts the user that game is over
 Player.prototype.resetPosition = function() {
     this.x = 200;
     this.y = 400;
+    if (this.lives == 0) {
+        startGame = false;
+        this.score = 0;
+        this.lives = 10;
+        $("#score").find('p').text(player.score);
+        alert("Game Over! :( Click ok, then press 'space' to start the game.");
+    }
 }
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var enemy1 = new Enemy(0, 65);
-var enemy2 = new Enemy(125, 150);
-var enemy3 = new Enemy(75, 230);
-var enemy4 = new Enemy(-150, 65);
-var enemy5 = new Enemy(-175, 230);
-var allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
+var enemyMinSpeed = 100;
+var enemyMaxSpeed = 300;
+
+var enemy1 = new Enemy(0, 65, Math.floor((Math.random() * (enemyMaxSpeed - enemyMinSpeed) + enemyMinSpeed)));
+var enemy2 = new Enemy(125, 150, Math.floor((Math.random() * (enemyMaxSpeed - enemyMinSpeed) + enemyMinSpeed)));
+var enemy3 = new Enemy(75, 230, Math.floor((Math.random() * (enemyMaxSpeed - enemyMinSpeed) + enemyMinSpeed)));
+var allEnemies = [enemy1, enemy2, enemy3];
 var player = new Player(200, 400);
 
 // This listens for key presses and sends the keys to your
@@ -134,8 +192,8 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        32: 'space'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });

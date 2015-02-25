@@ -45,7 +45,13 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
+         // If user pressed space then start the game
+         if (startGame) {
+            $("#score").find('p').text(player.score);
+            $("#lives").find('p').text(player.lives);
+            update(dt);
+         }
+        // update(dt);
         render();
 
         /* Set our lastTime variable which is used to determine the time delta
@@ -172,7 +178,12 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
+
     ]);
     Resources.onReady(init);
 
